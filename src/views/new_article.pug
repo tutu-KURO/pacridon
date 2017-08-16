@@ -1,0 +1,17 @@
+extends layout.pug
+block head
+  mate(cherset="UTF-8")
+  //- link(rel="stylesheet" href="/styles/new_aricles.css")
+  //- link(rel="stylesheet" href="/styles/new_article.css")
+  title 新規記事作成
+block content
+  .page-header
+    h1 新規記事作成
+  form(action="/articles" method="post")
+    .form-group
+      input.form-control(type="text" name="title" placeholder="タイトル")
+    .form-group
+      textarea.form-control(name="body" rows="10" placeholder="本文")
+    .form-group
+      input.btn.btn-primary.btn-lg.btn-block(type="submit" value="作成")#meik
+    p

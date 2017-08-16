@@ -1,0 +1,16 @@
+body{
+  text-align: center;
+  background-color: #fffaef;
+  margin: 0 auto;
+}
+h1{
+
+}
+h2{
+  /* padding: 80px; */
+  color: #6594e0;/*文字色*/
+  border-bottom:  dashed 2px #6594e0;
+  /*線の種類（点線）2px 線色*/
+  width: 200px;
+  margin: 0 auto;
+}

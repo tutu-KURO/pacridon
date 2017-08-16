@@ -1,0 +1,18 @@
+body{
+  background-color: #fffaef;
+  
+}
+h1 {
+  text-align: center
+}
+form{
+  width: 200px;
+  margin: 0 auto;
+}
+input, textarea{
+  font-size: 12px;
+  
+}
+#meik{
+  margin: 0 auto
+}
