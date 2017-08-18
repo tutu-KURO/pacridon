@@ -12,7 +12,23 @@ block content
         .form-group
           input.btn.btn-primary.btn-lg(type="submit" value="toot!")
         p
-      .panel-group
+      #toots.panel-group
         each toot in toots.reverse()
           .panel.panel-default
             .panel-body=toot.data.body
+  script.
+    window.addEventListener('DOMContentLoaded',function(){
+      let toots = document.getElementById('toots');
+      let ws = new WebSocket
+      ('ws://localhost:3000/api/timeline');
+      ws.addEventListener('message',function(event){
+        let toot = JSON.parse(event.data);
+        let panel = document.createElement('div');
+        panel.className = 'panel panel-default';
+        let panelBody = document.createElement('div');
+        panelBody.className = 'panel-body';
+        panelBody.innerText = toot.body;
+        panel.appendChild(panelBody);
+        toots.insertBefore(panel,toots.firstChild);
+      })
+    })
