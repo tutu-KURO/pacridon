@@ -18,6 +18,10 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.locals.db = require('./db')
+
+const filters = require('./filters');
+filters(app);
+
 let routes = require('./routes');
 routes(app);
 
