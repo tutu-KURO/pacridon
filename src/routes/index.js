@@ -36,5 +36,8 @@ module.exports = function(app) {
 
   require('./users')(app);
   // require('./articles')(app);
+
+  require('./api')(app);
+
 }
 

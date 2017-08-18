@@ -1,16 +1,16 @@
-const UserSession = require('./models/user_session');
-const User = require('./models/user');
+const UserSession = require('../models/user_session');
+const User = require('../models/user');
 
 
 module.exports = function(app){
-  app.use(function(req,rep,next){//nextは潜って取ってくる
+  app.use(function(req,res,next){//nextは潜って取ってくる
     let sessionId = req.signedCookies.session_id;
 
     if(sessionId === null || sessionId === undefined){
       return next();
     }
     UserSession.find(sessionId).then((session)=>{
-      return UserSession.find(session.data.user_id);
+      return User.find(session.data.user_id);
     }).then((user)=>{
       res.locals.currentUser = user;
       next();
