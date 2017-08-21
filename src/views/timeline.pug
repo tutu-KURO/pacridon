@@ -4,31 +4,14 @@ block head
   //- link(rel="stylesheet" href="/styles/login.css")
   title pacridon
 block content
-  .row
+  #timeline.row
     .col-md-6.col-md-offset-3
-      form(action="/new_toot" method="post")
+      form(v-on:submit="postToot")
         .form-group
-          textarea.form-control(name="toot" placeholder="今何してる？" required)
+          textarea.form-control(v-model="newToot.body" placeholder="今何してる？" required)
         .form-group
           input.btn.btn-primary.btn-lg(type="submit" value="toot!")
         p
       #toots.panel-group
-        each toot in toots.reverse()
-          .panel.panel-default
-            .panel-body=toot.data.body
-  script.
-    window.addEventListener('DOMContentLoaded',function(){
-      let toots = document.getElementById('toots');
-      let ws = new WebSocket
-      ('ws://localhost:3000/api/timeline');
-      ws.addEventListener('message',function(event){
-        let toot = JSON.parse(event.data);
-        let panel = document.createElement('div');
-        panel.className = 'panel panel-default';
-        let panelBody = document.createElement('div');
-        panelBody.className = 'panel-body';
-        panelBody.innerText = toot.body;
-        panel.appendChild(panelBody);
-        toots.insertBefore(panel,toots.firstChild);
-      });
-    });
+          .panel.panel-default(v-for="toot in toots")
+            .panel-body {{toot.body}}
