@@ -26,6 +26,14 @@ class Collection{
     return assigned;
   }
 
+  order(column,direction = "asc"){//orderを作ってtootの順番を最新順にする。routes/api/tootsに渡す
+    // SELECT *FROM `table` ORDER BY id DESC
+    //ASCEND / DESCEND
+    let assigned = this.clone();
+    assigned._order = {column: column,direction: direction};
+    return assigned;
+  }
+
   then(f){
     let sqlParts = [`SELECT * FROM ??`];
     let sqlValues = [this.klass.tableName()];
@@ -38,6 +46,17 @@ class Collection{
       })
       sqlParts.push(wheres.join(' AND '));
     }
+
+    if(this._order.column){
+      sqlParts.push('ORDER BY')
+      if(this._order.direction.toLowerCase() === "asc"){
+        sqlParts.push('?? ASC');
+      }else{
+        sqlParts.push('?? DESC');
+      }
+      sqlValues.push(this._order.column)
+    }
+
     return new Promise((resolve,reject)=>{
       db.query(sqlParts.join(' '),sqlValues).then((result)=>{
         let rows = result[0];

@@ -26,7 +26,7 @@ gulp.task('server',['webpack'],function(cb){
   }).on('start',function(){
     if(!started){
       started=true;
-      cd();
+      cb();
     }
   }).on('error',function(err){
     console.log(err);

@@ -1,1 +1,1 @@
-require('./timeline');
+require('./timeline')

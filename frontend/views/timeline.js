@@ -1,49 +1,79 @@
 const domready = require('domready')
 const Vue = require('vue/dist/vue.min');
 
-domready(function(){
+domready(function () {
   let timeline = document.getElementById('timeline');
-  if(!timeline){
+  if (!timeline) {
     return;
   }
 
   let vm = new Vue({
-    el:"#timeline",
-    data:{
-      newToot:{body: ''},
-      toots:[]
+    el: "#timeline",
+    data: {
+      newToot: { body: '' },
+      toots: []
     },
     methods: {
-      postToot: function(event){
+      postToot: function (event) {
         event.preventDefault();
         let fd = new URLSearchParams();
-        fd.set('toot',this.newToot.body)
+        fd.set('toot', this.newToot.body)
 
-        fetch('/api/toots',{
+        fetch('/api/toots', {
           credentials: 'same-origin',
           method: 'POST',
           body: fd
-        }).then((response)=>{
+        }).then((response) => {
           return response.json();
-        }).then((data)=>{
+        }).then((data) => {
           console.log(data);
-        }).catch((error)=>{
+        }).catch((error) => {
+          console.error(error);
+        })
+      },
+      deleteToot: function (event, id) {
+        for (let i = 0; i < this.toots.length; i++) {
+          if (this.toots[i].id === id) {
+            this.toots.splice(i, 1);
+            break;
+          }
+        }
+        if (!event) { return }
+        event.preventDefault();//デフォルトの挙動をしなくて良い
+
+        fetch('/api/toots/' + id, {
+          credentials: 'same-origin',
+          method: 'DELETE',
+        }).then((data) => {
+          //console.log(data);
+        }).catch((error) => {
           console.error(error);
         })
       }
+
     }
   });
-  fetch('/api/toots',{
+  fetch('/api/toots', {
     credentials: 'same-origin'
-  }).then((response)=>{
+  }).then((response) => {
     return response.json();
-  }).then((data)=>{
+  }).then((data) => {
     vm.toots = data;
-  }).catch((error)=>{
+  }).catch((error) => {
     console.error(error);
   })
+
   let ws = new WebSocket("ws://localhost:3000/api/timeline");
-  ws.addEventListener('message',function(event){
-    vm.toots.unshift(JSON.parse(event.data));
+  ws.addEventListener('message', function (event) {
+    let message = JSON.parse(event.data);
+    switch (message.action) {
+      case "create":
+        vm.toots.unshift(message.toot);
+        break;
+      case "delete":
+        vm.deleteToot(null,message.toot.id);
+        break;
+    }
+    // vm.toots.unshift(JSON.parse(event.data));
   })
 });

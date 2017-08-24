@@ -9,6 +9,7 @@ module.exports = function(app) {
     }
   
     res.render("timeline");
+
   })
 
   require('./users')(app);
