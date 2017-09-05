@@ -7,9 +7,11 @@ class Toot extends Record {
     return "toots";
   }
 
+
   static columns() {
     return ["user_id", "body"];
   }
+
 
   static create(user, body) {
     return new this({ user_id: user.data.id, body: body })
@@ -56,5 +58,6 @@ class Toot extends Record {
 
 
 }
+
 
 module.exports = Toot;

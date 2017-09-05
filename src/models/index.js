@@ -49,7 +49,7 @@ let db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "myBlog"
+  database: "pacridon"
 });
 db.connect();
 let mysqlPromise = require("mysql-promise");
@@ -58,7 +58,7 @@ dbp.configure({
   host: "localhost",
   user: "root",
   password: "",
-  database: "myBlog"
+  database: "pacridon"
 }, mysql)
 
 app.locals.db = db;

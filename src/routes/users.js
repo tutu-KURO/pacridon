@@ -19,23 +19,10 @@ module.exports = function (app) {
       res.render("signup", { error: true });
     });
 
-    // let salt = crypto.randomBytes(8).toString('hex');
-    // let sha512 = crypto.createHash('sha512');
-    // sha512.update(salt);
-    // sha512.update(pass);
-    // let hash = sha512.digest('hex');
+  });
 
-    // let user = new User({
-    //   nickname: nickname,
-    //   email: email,
-    //   password: hash,
-    //   salt: salt
-    // });
-    // user.save().then(() => {
-    //   res.redirect(302, 'login');
-    // }, () => {
-    //   res.status(409).send('Nickname または　E-mailアドレスが重複しています')
-    // })
+  app.get("/top", function (req, res) {
+    res.render('top')
   });
 
   app.get("/login", function (req, res) {
@@ -79,6 +66,7 @@ module.exports = function (app) {
     })
 
   });
+
 }
 
 

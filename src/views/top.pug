@@ -1,0 +1,14 @@
+extends layout.pug
+block head
+  //- link(rel="stylesheet" href="/styles/login.css")
+  title トップページ
+block content
+  .row
+    .col-md-6.col-md-offset-3
+      .page-header
+        h1 pcridonサイト〜
+        h2 toppage
+      form(action="/top")
+        .form-group
+          input.btn.btn-primary.btn-lg(type="submit" value="ログイン")
+        p
