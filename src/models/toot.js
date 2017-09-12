@@ -9,9 +9,12 @@ class Toot extends Record {
 
 
   static columns() {
-    return ["user_id", "body"];
+    return ["user_id", "body","created_at","updated_at"];
   }
 
+  static insertColumns() {
+    return ["user_id", "body"];
+  }
 
   static create(user, body) {
     return new this({ user_id: user.data.id, body: body })

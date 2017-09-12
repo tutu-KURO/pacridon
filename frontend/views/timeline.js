@@ -58,6 +58,11 @@ domready(function () {
   }).then((response) => {
     return response.json();
   }).then((data) => {
+    data.map((toot) => {
+      toot.created_at = new Date(toot.created_at);
+      toot.updated_at = new Date(toot.updated_at);
+      return toot;
+    });
     vm.toots = data;
   }).catch((error) => {
     console.error(error);
