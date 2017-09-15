@@ -9,6 +9,7 @@ block content
       form(v-on:submit="postToot")
         .form-group
           textarea.form-control(v-model="newToot.body" placeholder="今何してる？" required)
+          input(type="file" v-on:change="onSelectFile")
         .form-group
           input.btn.btn-primary.btn-lg(type="submit" value="toot!")
         p
@@ -19,4 +20,5 @@ block content
                 button.btn.btn-danger.btn-xs(v-on:click="deleteToot($event,toot.id)")
                   i.glyphicon.glyphicon-trash
               | {{toot.body}}{{toot.created_at.toLocaleDateString()}}{{toot.created_at.toLocaleTimeString()}}
-              
+          button.btn.btn-denger.btn-block(type="button" class="btn btn-danger" v-on:click="purgeToots()" )
+            span.glyphicon.glyphicon-trash clear

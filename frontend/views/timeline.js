@@ -1,5 +1,6 @@
 const domready = require('domready')
-const Vue = require('vue/dist/vue.min');
+const Vue = require('vue/dist/vue.min')
+
 
 domready(function () {
   let timeline = document.getElementById('timeline');
@@ -11,13 +12,15 @@ domready(function () {
     el: "#timeline",
     data: {
       newToot: { body: '' },
-      toots: []
+      toots: [],
+      newImg: null,
     },
     methods: {
       postToot: function (event) {
         event.preventDefault();
-        let fd = new URLSearchParams();
+        let fd = new FormData();
         fd.set('toot', this.newToot.body)
+        fd.set('img',this.newImg)
 
         fetch('/api/toots', {
           credentials: 'same-origin',
@@ -31,6 +34,10 @@ domready(function () {
           console.error(error);
         })
       },
+      onSelectFile: function(event){
+        this.newImg = event.target.files[0]
+      },
+
       deleteToot: function (event, id) {
         for (let i = 0; i < this.toots.length; i++) {
           if (this.toots[i].id === id) {
@@ -49,6 +56,12 @@ domready(function () {
         }).catch((error) => {
           console.error(error);
         })
+      },
+      //--追加　9/24
+      purgeToots: function(){
+        this.toots=this.toots.filter(function(toot){
+          return toot;
+        });
       }
 
     }
@@ -73,6 +86,7 @@ domready(function () {
     let message = JSON.parse(event.data);
     switch (message.action) {
       case "create":
+        message.toot.created_at = new Date();
         vm.toots.unshift(message.toot);
         break;
       case "delete":

@@ -16,7 +16,7 @@ class Collection{
     cloned._where = Object.assign({},this._where);
     cloned._order = Object.assign({},this._order);
     cloned._limit = this._limit;
-    cloned._offset = this._offset;
+    cloned._ofet = this._offset;
     return cloned;
   }
 
