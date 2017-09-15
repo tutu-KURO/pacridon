@@ -59,10 +59,25 @@ domready(function () {
       },
       //--追加　9/24
       purgeToots: function(){
-        this.toots=this.toots.filter(function(toot){
+        this.toots = this.toots.filter(function(toot){
           return toot;
         });
+        
+        //このままだと他のユーザーのも消えてしまう！！
+
+        for (let toot of this.toots) {
+          fetch('/api/toots/' + toot.id, {
+            credentials: 'same-origin',
+            method: 'DELETE',
+          }).then((data) => {
+            //console.log(data);
+          }).catch((error) => {
+            console.error(error);
+          })
+        }
+
       }
+
 
     }
   });

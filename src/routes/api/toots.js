@@ -22,8 +22,9 @@ module.exports = function (app) {
 
   app.post('/api/toots', upload.single('img') ,function (req, res) {
     
-    console.log(req.file)
+    console.log(req.file)//ここからなんなの？イメージ
     console.log(req.body)
+    
     if (!res.locals.currentUser) {
       res.status(401).json({ "error": "Unauthorized" });
       return;

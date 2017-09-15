@@ -17,8 +17,10 @@ block content
           .media.panel.panel-default.panel-body(v-for="toot in toots")
             .media-body 
               .pull-right
-                button.btn.btn-danger.btn-xs(v-on:click="deleteToot($event,toot.id)")
-                  i.glyphicon.glyphicon-trash
-              | {{toot.body}}{{toot.created_at.toLocaleDateString()}}{{toot.created_at.toLocaleTimeString()}}
+              | {{toot.body}}
+            .pull-right
+              button.btn.btn-danger.btn-xs(v-on:click="deleteToot($event,toot.id)")
+                i.glyphicon.glyphicon-trash
+            |{{toot.created_at.toLocaleDateString()}}{{toot.created_at.toLocaleTimeString()}}
           button.btn.btn-denger.btn-block(type="button" class="btn btn-danger" v-on:click="purgeToots()" )
             span.glyphicon.glyphicon-trash clear
