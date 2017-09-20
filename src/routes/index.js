@@ -10,6 +10,13 @@ module.exports = function(app) {
 
   })
 
+  app.get("/image/:filename",function(req,res){
+    req.params.filename;
+    
+
+    res.send()
+  })
+
   require('./users')(app);
   // require('./articles')(app);
 

@@ -8,7 +8,7 @@ class Toot extends Record {
   }
 
   static columns() {
-    return ["user_id", "body","images_id","created_at","updated_at"];
+    return ["user_id", "body","image_id","created_at","updated_at"];
   }
 
   static insertColumns() {

@@ -19,8 +19,8 @@ domready(function () {
       postToot: function (event) {
         event.preventDefault();
         let fd = new FormData();
-        fd.set('toot', this.newToot.body)
-        fd.set('img',this.newImg)
+        fd.set('toot', this.newToot.body)//tootをsetしていて、（名前,中身）
+        fd.set('img',this.newImg)//imgをsetしていて、（名前,中身）
 
         fetch('/api/toots', {
           credentials: 'same-origin',
@@ -29,7 +29,7 @@ domready(function () {
         }).then((response) => {
           return response.json();
         }).then((data) => {
-          console.log(data);
+          //console.log(data);
         }).catch((error) => {
           console.error(error);
         })
@@ -37,7 +37,7 @@ domready(function () {
       onSelectFile: function(event){
         this.newImg = event.target.files[0]
       },
-
+      //toot消去
       deleteToot: function (event, id) {
         for (let i = 0; i < this.toots.length; i++) {
           if (this.toots[i].id === id) {
@@ -48,6 +48,7 @@ domready(function () {
         if (!event) { return }
         event.preventDefault();//デフォルトの挙動をしなくて良い
 
+        //消してーって送る
         fetch('/api/toots/' + id, {
           credentials: 'same-origin',
           method: 'DELETE',
@@ -57,7 +58,7 @@ domready(function () {
           console.error(error);
         })
       },
-      //--追加　9/24
+      //--全消し追加　9/24
       purgeToots: function(){
         this.toots = this.toots.filter(function(toot){
           return toot;

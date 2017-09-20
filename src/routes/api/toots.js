@@ -1,4 +1,5 @@
 const Toot = require('../../models/toot');
+const Image = require('../../models/image');
 let express = require('express')
 let multer  = require('multer')
 let storage = multer.memoryStorage()
@@ -21,24 +22,17 @@ module.exports = function (app) {
   });
 
   app.post('/api/toots', upload.single('img') ,function (req, res) {
-    
-    console.log(req.file)//ここからなんなの？イメージ
-    console.log(req.body)
-    
-    if (!res.locals.currentUser) {
-      res.status(401).json({ "error": "Unauthorized" });
-      return;
-    
-    }
-
-
-    Toot.create(res.locals.currentUser, req.body.toot).then((toot) => {
+    //ここからイメージを作る　モデルで作ったやつを
+    Image.create(req.file.image).then((image) => {
+      return Toot.create(res.locals.currentUser, req.body.toot, image);
+    }).then((toot) => {
       toot.data.created_at = new Date();
-      res.json({ toot: toot.data });
+      res.json({ toot: toot.data ,image: image.filename});
     }).catch((err) => {
       res.status(500).json({ error: err.toString() })
     });
   });
+
   app.delete('/api/toots/:id',function(req,res){//tootがいっこくる
     if (!res.locals.currentUser) {
       res.status(401).json({ "error": "Unauthorized" });
