@@ -8,19 +8,19 @@ class Image extends Record {
   }
 
   static columns() {
-    return ["image_id", "data", "filename"];
+    return ["image_id", "data", "filename", "mime_type"];
   }
 
-  static search_by_filename(filename){
+  static search_by_filename(filename) {
     return new Promise((resolve, reject) => {
       db.query(
         "SELECT * FROM `images` WHERE `filename` = ?",
         [filename]
       ).then((result) => {
-        console.log(result)
+        //console.log(result)
         let rows = result[0];
         let fields = result[1];
-        if(rows.length < 1) {
+        if (rows.length < 1) {
           reject(new Error(`${this.name}(${filename}) is not found`));
           return;
         }
@@ -34,13 +34,9 @@ class Image extends Record {
   static create(data, mimetype) {
     let sha256 = crypto.createHash('sha256');
     sha256.update(data);
-    let hash = sha256.digest('base64').replace(/\+/g,"-").replace(/\//g,"_").replace(/\=/,"");
-    let mimeType = mimetype.replace(/\image\//g,"");
-    console.log(mimeType)
-    return new this({ data: data, filename: hash, mimeType })
-      .save();
+    let hash = sha256.digest('base64').replace(/\+/g, "-").replace(/\//g, "_").replace(/\=/, "");
+    return new this({ data: data, filename: hash, mime_type: mimetype }).save(); 
   }
- 
 }
 
 module.exports = Image;

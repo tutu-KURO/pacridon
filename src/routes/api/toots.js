@@ -23,7 +23,6 @@ module.exports = function (app) {
 
   app.post('/api/toots', upload.single('image') ,function (req, res) {
     //ここからイメージを作る　モデルで作ったやつを
-    console.log(req.file)
     Image.create(req.file.buffer, req.file.mimetype).then((image) => {
       return Toot.create(res.locals.currentUser, req.body.toot, image);
     }).then((toot) => {

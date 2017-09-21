@@ -3,13 +3,13 @@ const Record = require('./record');
 const Image = require("./image.js")
 const redis = require('../redis');
 
-class Toot extends Record { 
+class Toot extends Record {
   static tableName() {
     return "toots";
   }
 
   static columns() {
-    return ["user_id", "body","image_id","created_at","updated_at"];//nickname追加9/21試みる
+    return ["user_id", "body","image_id","created_at","updated_at"];
   } 
 
   static insertColumns() {

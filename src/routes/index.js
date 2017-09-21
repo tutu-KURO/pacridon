@@ -13,11 +13,11 @@ module.exports = function(app) {
   })
 
   app.get("/image/:filename",function(req,res){
-    console.log(req.params.filename);//これでファイルネームを返せる
+    //console.log(req.params.filename);//これでファイルネームを返せる
     Image.search_by_filename(req.params.filename).then((image) => {
-      res.type(mimeType).send(image.data.data);
-    }).catch(() => {
-      res.status(404).send('no data');
+      res.type(image.data.mime_type).send(image.data.data);
+    }).catch((err) => {
+      res.status(404).json({ error: err.toString() })
     });
   })
 
