@@ -1,23 +1,29 @@
 const db = require('../db');
 const Record = require('./record');
+const Image = require("./image.js")
 const redis = require('../redis');
 
-class Toot extends Record {
+class Toot extends Record { 
   static tableName() {
     return "toots";
   }
 
   static columns() {
-    return ["user_id", "body","image_id","created_at","updated_at"];
-  }
+    return ["user_id", "body","image_id","created_at","updated_at"];//nickname追加9/21試みる
+  } 
 
   static insertColumns() {
-    return ["user_id", "body"];
+    return ["user_id", "body", "image_id"];
   }
 
-  static create(user, body) {
-    return new this({ user_id: user.data.id, body: body })
+  static create(user, body, image) {
+    return new this({ user_id: user.data.id, body: body, image_id: image.data.id})
       .save();
+  }
+
+  image(image_id){
+    //image_id　から　imageをとって返す
+    return Image.find(image_id);
   }
 
   insert() {

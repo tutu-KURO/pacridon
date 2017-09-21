@@ -3,7 +3,7 @@ const Image = require('../../models/image');
 let express = require('express')
 let multer  = require('multer')
 let storage = multer.memoryStorage()
-var upload = multer({ storage: storage })
+let upload = multer({ storage: storage })
 
 module.exports = function (app) {
   app.get('/api/toots', function (req, res) {
@@ -21,13 +21,15 @@ module.exports = function (app) {
     });
   });
 
-  app.post('/api/toots', upload.single('img') ,function (req, res) {
+  app.post('/api/toots', upload.single('image') ,function (req, res) {
     //ここからイメージを作る　モデルで作ったやつを
-    Image.create(req.file.image).then((image) => {
+    console.log(req.file)
+    Image.create(req.file.buffer, req.file.mimetype).then((image) => {
       return Toot.create(res.locals.currentUser, req.body.toot, image);
     }).then((toot) => {
       toot.data.created_at = new Date();
-      res.json({ toot: toot.data ,image: image.filename});
+      //console.log(toot.image().filename)
+      res.json({ toot: toot.data ,image: toot.image().filename});
     }).catch((err) => {
       res.status(500).json({ error: err.toString() })
     });

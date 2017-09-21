@@ -13,15 +13,14 @@ domready(function () {
     data: {
       newToot: { body: '' },
       toots: [],
-      newImg: null,
+      newImage: null,
     },
     methods: {
       postToot: function (event) {
         event.preventDefault();
         let fd = new FormData();
         fd.set('toot', this.newToot.body)//tootをsetしていて、（名前,中身）
-        fd.set('img',this.newImg)//imgをsetしていて、（名前,中身）
-
+        fd.set('image',this.newImage)//imageをsetしていて、（名前,中身）
         fetch('/api/toots', {
           credentials: 'same-origin',
           method: 'POST',
@@ -35,7 +34,7 @@ domready(function () {
         })
       },
       onSelectFile: function(event){
-        this.newImg = event.target.files[0]
+        this.newImage = event.target.files[0]
       },
       //toot消去
       deleteToot: function (event, id) {
@@ -58,7 +57,7 @@ domready(function () {
           console.error(error);
         })
       },
-      //--全消し追加　9/24
+      //--全消し追加　9/24 -全て消えちゃう
       purgeToots: function(){
         this.toots = this.toots.filter(function(toot){
           return toot;

@@ -85,7 +85,6 @@ class Record {
       return this.data[column]
     });
     sqlValues.push(attributes);
-
     return new Promise((resolve, reject) => {
       db.query(
         "INSERT INTO ?? (??) VALUES (?);",
