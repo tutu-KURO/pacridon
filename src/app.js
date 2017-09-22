@@ -15,6 +15,9 @@ app.use(express.static(path.resolve(__dirname,'../public')));
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 
+const morgan = require('morgan');
+app.use(morgan('tiny'));
+
 const cookieParser = require('cookie-parser');
 app.use(cookieParser("kuro"));
 

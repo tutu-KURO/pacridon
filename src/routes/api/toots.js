@@ -23,15 +23,17 @@ module.exports = function (app) {
 
   app.post('/api/toots', upload.single('image') ,function (req, res) {
     //ここからイメージを作る　モデルで作ったやつを
-    Image.create(req.file.buffer, req.file.mimetype).then((image) => {
-      return Toot.create(res.locals.currentUser, req.body.toot, image);
-    }).then((toot) => {
-      toot.data.created_at = new Date();
-      //console.log(toot.image().filename)
-      res.json({ toot: toot.data ,image: toot.image().filename});
-    }).catch((err) => {
-      res.status(500).json({ error: err.toString() })
-    });
+    Image.create(req.file.buffer, req.file.mimetype).
+      then((image) => {
+        return Toot.create(res.locals.currentUser, req.body.toot, image);
+      }).
+      then((toot) => {
+        toot.data.created_at = new Date();
+        res.json({ toot: toot.data ,image: toot.image().filename});
+      }).
+      catch((err) => {
+        res.status(500).json({ error: err.toString() })
+      });
   });
 
   app.delete('/api/toots/:id',function(req,res){//tootがいっこくる

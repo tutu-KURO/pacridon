@@ -17,7 +17,7 @@ block content
           .media.panel.panel-default.panel-body(v-for="toot in toots")
             .media-body 
               .pull-right
-              img(src=toot.image.data.filename)
+                img(:src="'/images/' + toot.image_id")
               | {{toot.body}} 
             .pull-right
               button.btn.btn-danger.btn-xs(v-on:click="deleteToot($event,toot.id)")

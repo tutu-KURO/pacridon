@@ -1,6 +1,6 @@
 const db = require('../db');
 const Record = require('./record');
-const Image = require("./image.js")
+const Image = require("./image")
 const redis = require('../redis');
 
 class Toot extends Record {
@@ -21,9 +21,9 @@ class Toot extends Record {
       .save();
   }
 
-  image(image_id){
+  image(){
     //image_id　から　imageをとって返す
-    return Image.find(image_id);
+    return Image.find(this.data.image_id);
   }
 
   insert() {

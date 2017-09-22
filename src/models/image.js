@@ -8,7 +8,7 @@ class Image extends Record {
   }
 
   static columns() {
-    return ["image_id", "data", "filename", "mime_type"];
+    return ["data", "filename", "mime_type"];
   }
 
   static search_by_filename(filename) {
@@ -36,6 +36,11 @@ class Image extends Record {
     sha256.update(data);
     let hash = sha256.digest('base64').replace(/\+/g, "-").replace(/\//g, "_").replace(/\=/, "");
     return new this({ data: data, filename: hash, mime_type: mimetype }).save(); 
+  }
+
+  base64() {
+    let buf = new Buffer(this.data);
+    return buf.toString('base64');
   }
 }
 
