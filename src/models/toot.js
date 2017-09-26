@@ -17,6 +17,10 @@ class Toot extends Record {
   }
 
   static create(user, body, image) {
+    if(image === undefined){
+      return new this({ user_id: user.data.id, body: body})
+      .save();
+    }
     return new this({ user_id: user.data.id, body: body, image_id: image.data.id})
       .save();
   }

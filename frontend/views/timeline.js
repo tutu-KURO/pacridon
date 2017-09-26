@@ -58,10 +58,13 @@ domready(function () {
         })
       },
       //--全消し追加　9/24 -全て消えちゃう
-      purgeToots: function(){
-        this.toots = this.toots.filter(function(toot){
-          return toot;
-        });
+      purgeToots: function(id){
+        if (this.toots.user_id === id) {
+          this.toots = this.toots.filter(function(toot){
+            return toot;
+          });
+        }
+        
         
         //このままだと他のユーザーのも消えてしまう！！
 

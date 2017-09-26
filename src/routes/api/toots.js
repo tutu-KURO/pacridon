@@ -1,7 +1,7 @@
 const Toot = require('../../models/toot');
 const Image = require('../../models/image');
 let express = require('express')
-let multer  = require('multer')
+let multer = require('multer')
 let storage = multer.memoryStorage()
 let upload = multer({ storage: storage })
 
@@ -21,22 +21,32 @@ module.exports = function (app) {
     });
   });
 
-  app.post('/api/toots', upload.single('image') ,function (req, res) {
+  app.post('/api/toots', upload.single('image'), function (req, res) {
     //ここからイメージを作る　モデルで作ったやつを
-    Image.create(req.file.buffer, req.file.mimetype).
-      then((image) => {
-        return Toot.create(res.locals.currentUser, req.body.toot, image);
-      }).
-      then((toot) => {
-        toot.data.created_at = new Date();
-        res.json({ toot: toot.data ,image: toot.image().filename});
-      }).
-      catch((err) => {
-        res.status(500).json({ error: err.toString() })
+    if (req.file === undefined) {
+      Toot.create(res.locals.currentUser, req.body.toot).then((toot) => {
+        console.log(toot.data)
+        res.json({ toot: toot.data });
+      }).catch((err) => {
+        res.status(500).json({ error: error.toString() })
       });
+    } else {
+      Image.create(req.file.buffer, req.file.mimetype).
+        then((image) => {
+          return Toot.create(res.locals.currentUser, req.body.toot, image);
+        }).
+        then((toot) => {
+          toot.data.created_at = new Date();
+          res.json({ toot: toot.data, image: toot.image().filename });
+        }).
+        catch((err) => {
+          res.status(500).json({ error: err.toString() })
+        });
+    }
+
   });
 
-  app.delete('/api/toots/:id',function(req,res){//tootがいっこくる
+  app.delete('/api/toots/:id', function (req, res) {//tootがいっこくる
     if (!res.locals.currentUser) {
       res.status(401).json({ "error": "Unauthorized" });
       return;
@@ -44,13 +54,13 @@ module.exports = function (app) {
 
     res.locals.currentUser.toots().where({
       id: req.params.id
-    }).then((toots)=>{
-      if(toots.length > 0){
+    }).then((toots) => {
+      if (toots.length > 0) {
         toots[0].destroy();
       }
       res.status(200).end();
-    }).catch((error)=>{
-      res.status(500).json({"error": error.toString()});
+    }).catch((error) => {
+      res.status(500).json({ "error": error.toString() });
     })
   });
 };
