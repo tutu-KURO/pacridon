@@ -13,9 +13,16 @@ module.exports = function (app) {
     }
 
     res.locals.currentUser.toots().order('id', 'desc').then((toots) => {
-      res.json(toots.map((toot) => {
-        return toot.data;
-      }));
+      users = toots.map((toot) => {
+        return toot.user();
+      });
+
+      Promise.all(users).then((users) => {
+        res.json(toots.map((toot, idx) => {
+          toot.data.nickname = users[idx].data.nickname;
+          return toot.data;
+        }))
+      });
     }).catch((error) => {
       res.status(500).json({ error: error.toString() });
     });
@@ -24,12 +31,15 @@ module.exports = function (app) {
   app.post('/api/toots', upload.single('image'), function (req, res) {
     //ここからイメージを作る　モデルで作ったやつを
     if (req.file === undefined) {
-      Toot.create(res.locals.currentUser, req.body.toot).then((toot) => {
-        console.log(toot.data)
-        res.json({ toot: toot.data });
-      }).catch((err) => {
-        res.status(500).json({ error: error.toString() })
-      });
+      Toot.create(res.locals.currentUser, req.body.toot).
+        then((toot) => {
+          //console.log(toot.data)
+          toot.data.created_at = new Date();
+          res.json({ toot: toot.data });
+        }).
+        catch((err) => {
+          res.status(500).json({ error: error.toString() })
+        });
     } else {
       Image.create(req.file.buffer, req.file.mimetype).
         then((image) => {

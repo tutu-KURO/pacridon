@@ -64,8 +64,6 @@ domready(function () {
             return toot;
           });
         }
-        
-        
         //このままだと他のユーザーのも消えてしまう！！
 
         for (let toot of this.toots) {
@@ -79,7 +77,6 @@ domready(function () {
           })
         }
       }
-
 
     }
   });

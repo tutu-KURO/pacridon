@@ -1,6 +1,7 @@
 const db = require('../db');
 const Record = require('./record');
 const Image = require("./image")
+
 const redis = require('../redis');
 
 class Toot extends Record {
@@ -25,29 +26,40 @@ class Toot extends Record {
       .save();
   }
 
+  user(){ 
+    const User = require("./user")
+    return User.find(this.data.user_id);
+  }
+
   image(){
     //image_id　から　imageをとって返す
     return Image.find(this.data.image_id);
   }
 
   insert() {
+    const User = require("./user")
     let insertPromise = super.insert();
     return new Promise((resolve, reject) => {
       insertPromise.then((toot) => {
         let conn = redis();
-        conn.publish(
-          'local',
-          JSON.stringify({
-            action: "create",
-            toot: this.asJSON()
-          })
-        );
+        User.find(toot.data.user_id).then((user)=>{
+          toot.data.nickname = user.data.nickname;  
+          conn.publish(
+            'local',
+            JSON.stringify({
+              action: "create",
+              toot: this.asJSON()
+            })
+          );  
+        })
+  
         resolve(toot);
       }).catch((error) => {
         reject(error);
       })
     });
   }
+
 
   destroy() {
     return new Promise((resolve, reject) => {
@@ -68,8 +80,9 @@ class Toot extends Record {
     })
   }
 
-
 }
+
+
 
 
 module.exports = Toot;
