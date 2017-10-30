@@ -43,7 +43,7 @@ class Toot extends Record {
       insertPromise.then((toot) => {
         let conn = redis();
         User.find(toot.data.user_id).then((user)=>{
-          toot.data.nickname = user.data.nickname;  
+          toot.data.nickname = user.data.nickname; //ニックネームを取ってきた
           conn.publish(
             'local',
             JSON.stringify({
